@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Misha Samorodin — 3D Artist</title>
+<meta name="description" content="Hard-surface props, vehicles and interiors, modeled and textured to be production ready in Unreal, Unity and V-Ray.">
+<meta name="theme-color" content="#FF4C16">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FF4C16'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.5v-9z' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linejoin='round'/%3E%3Cpath d='M8 11.5l8 4.5 8-4.5M16 16v9' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<span class="progress" id="progress" aria-hidden="true"></span>
+
+<div class="demo-pill" role="note">Unofficial concept demo · not Misha Samorodin’s official site</div>
+
+<!-- ============================================================= header -->
+<header class="nav" id="nav">
+  <div class="shell">
+    <a class="brand" href="#top" aria-label="Misha Samorodin, home">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M16 5l10 5.6v10.8L16 27 6 21.4V10.6z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M6 10.6l10 5.6 10-5.6M16 16.2V27" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+      <b>samorodin<i>3d</i></b>
+    </a>
+
+    <nav class="menu" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#reel">Showreel</a>
+      <a href="#skills">Skills</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#studios">Studios</a>
+    </nav>
+
+    <div class="status">
+      <span class="pulse" aria-hidden="true"></span>
+      <span class="lbl">Booking:</span><b>Freelance &amp; remote</b>
+      <span class="tag">open</span>
+    </div>
+
+    <a class="btn btn-o" href="#contact">Hire Me <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ============================================================= hero -->
+<section class="hero" id="top">
+  <span class="blob" aria-hidden="true"></span>
+  <div class="shell">
+    <div class="hero-grid">
+
+      <div class="figure" id="figure">
+        <div class="shot"><img src="img/hero.webp" alt="Vintage gas pump, modeled in 3ds Max and textured in Substance" width="720" height="900" fetchpriority="high"></div>
+
+        <div class="fcard f-top" data-depth="18">
+          <div class="stack">
+            <img src="img/av-corvette-gran-sport.webp" alt="" width="27" height="27">
+            <img src="img/av-crossbow.webp" alt="" width="27" height="27">
+            <img src="img/av-retro-fridge.webp" alt="" width="27" height="27">
+            <img src="img/av-vintage-gas-pump.webp" alt="" width="27" height="27">
+            <span class="more">+</span>
+          </div>
+          21 projects on the record
+          <small>props, vehicles, rooms, VR</small>
+          <span class="heart"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span>
+        </div>
+
+        <div class="fcard f-area" data-depth="-12">
+          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg></span>
+          Game ready, render ready
+          <small>PBR · clean UVs · LODs</small>
+        </div>
+
+        <div class="fcard f-count" data-depth="10">
+          <span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg></span>
+          In 3D since 2015
+          <small>VCAD, Vancouver graduate</small>
+        </div>
+
+        <div class="fcard f-film" data-depth="-20">
+          <video id="heroFilm" muted loop playsinline autoplay preload="metadata" poster="film/card.jpg" width="148" height="89">
+            <source src="film/card.mp4" type="video/mp4">
+          </video>
+          <span><i></i>Showreel · 2026</span>
+        </div>
+      </div>
+
+      <div class="hero-copy">
+        <h1 data-words>The 3D Artist Who Models It Production Ready</h1>
+        <p class="lead" data-fade>Hard-surface props, vehicles and interiors, built from real reference and handed over clean: sensible topology, tidy UVs and PBR textures that drop straight into Unreal, Unity or a V-Ray still.</p>
+
+        <form class="searchbar" id="quote" data-fade>
+          <label class="sseg">
+            <svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg>
+            <span class="sr">What do you need</span>
+            <select id="qWhat">
+              <option value="">What do you need?</option>
+              <option>A hard-surface prop</option>
+              <option>A vehicle</option>
+              <option>An interior or arch-viz room</option>
+              <option>A VR or simulation asset</option>
+              <option>Retopology of a scan</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+          </label>
+          <label class="sseg">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span class="sr">Where it is going</span>
+            <select id="qWhere">
+              <option value="">Where is it going?</option>
+              <option>Unreal Engine 5</option>
+              <option>Unity</option>
+              <option>Blender / Cycles</option>
+              <option>V-Ray stills</option>
+              <option>VR headset</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg>
+          </label>
+          <button class="btn btn-o" type="submit">Get a Quote</button>
+        </form>
+
+        <p class="tiny" data-fade>Usually replies within a day. Blender, 3ds Max, Maya, ZBrush and Substance in the toolbox.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= moving band -->
+<div class="marquee" aria-hidden="true">
+  <div class="mpush"><div class="mtrack" id="mtrack"></div></div>
+</div>
+
+<!-- ============================================================= process -->
+<section class="sec" id="services">
+  <span class="dots-deco" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>Four Steps From Reference to Engine</h2>
+      <p class="lead">The same pipeline on every job, from a single prop to a full room, so you always know what arrives next and what it will look like.</p>
+    </div>
+
+    <div class="steps4" data-stagger>
+      <article class="st4">
+        <div class="tile"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></div>
+        <span class="f">01</span>
+        <h4>Reference &amp; blockout</h4>
+        <p>Real-world photos, dimensions and a grey-box pass you can approve before any detail goes in.</p>
+      </article>
+      <article class="st4">
+        <div class="tile"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg></div>
+        <span class="f">02</span>
+        <h4>Hard-surface model</h4>
+        <p>Clean quads, supported edges and a polygon budget that suits the platform, from VR to film.</p>
+      </article>
+      <article class="st4">
+        <div class="tile"><svg viewBox="0 0 24 24"><path d="M4 20l6-6M14 4l6 6-8 8-6-6z"/><path d="M15 9l-2-2"/></svg></div>
+        <span class="f">03</span>
+        <h4>UV, bake &amp; texture</h4>
+        <p>High to low bakes, then wear, grime and colour painted in Substance with real material values.</p>
+      </article>
+      <article class="st4">
+        <div class="tile"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div>
+        <span class="f">04</span>
+        <h4>Engine-ready delivery</h4>
+        <p>Imported, lit and checked in your engine, with collisions and LODs when the project needs them.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= categories -->
+<section class="sec tint" id="categories">
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>What I Build Most Often</h2>
+      <p class="lead">Every project on this page sits in one of these. Pick a category and the work below filters to it.</p>
+    </div>
+    <div class="cgrid" id="catCards"></div>
+  </div>
+</section>
+
+<!-- ============================================================= work -->
+<section class="sec" id="work">
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>Selected Work, Start to Finish</h2>
+      <p class="lead">Studio jobs, marketplace assets and personal studies. Open any card for the full breakdown and the tools behind it.</p>
+    </div>
+
+    <div class="tabsrow">
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <div class="arrows">
+        <button type="button" id="prev" aria-label="Previous projects"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button type="button" id="next" class="on" aria-label="More projects"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="wviewport"><div class="wtrack" id="wtrack"></div></div>
+
+    <div class="center" style="margin-top:34px">
+      <a class="btn btn-o" href="https://www.artstation.com/mishasamorodin3d" target="_blank" rel="noopener">See Everything On ArtStation <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= showreel split -->
+<section class="sec tint" id="reel">
+  <div class="shell">
+    <div class="split">
+      <div class="copy">
+        <p class="eyebrow" data-rise>Showreel · 2026</p>
+        <h2 data-words>Assets That Hold Up When the Camera Moves</h2>
+        <p class="lead" data-rise>A still render forgives a lot. A camera move does not. Every model here is built to survive close-ups, turntables and real-time lighting, with silhouettes and bevels that read from any angle.</p>
+        <div class="btns" data-rise>
+          <a class="btn btn-o" href="#contact">Start a Project <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+          <button class="btn btn-line" id="reelToggle" type="button">Pause the Reel <span class="ic"><svg viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg></span></button>
+        </div>
+
+        <div class="detect" data-rise>
+          <div class="row"><span>Modeling</span><b>Blender · 3ds Max · Maya · ZBrush</b></div>
+          <div class="row"><span>Texturing</span><b>Substance Painter · Quixel Mixer</b></div>
+          <div class="row"><span>Engines</span><b>Unreal Engine 4 / 5 · Unity</b></div>
+          <div class="row"><span>Rendering</span><b>V-Ray · Arnold · Cycles · Marmoset</b></div>
+          <div class="row"><span>Delivery</span><b>FBX · glTF · Alembic · USD</b></div>
+        </div>
+      </div>
+
+      <div class="reel-wrap" data-rise>
+        <div class="reel-frame">
+          <video id="reelVideo" muted loop playsinline preload="none" poster="film/reel.jpg" width="854" height="480">
+            <source src="film/reel.mp4" type="video/mp4">
+          </video>
+          <span class="reel-tc" id="reelTc">00:00:00</span>
+        </div>
+        <div class="globe-cap"><i></i><span>Mood reel · Blender Studio open movies</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= skills flow -->
+<section class="sec" id="skills">
+  <span class="dots-deco left" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>How the Skills Flow Into Every Asset</h2>
+      <p class="lead">Each stage hands something finished to the next. Scroll and watch an asset travel the pipeline, picking up a skill at every stop.</p>
+    </div>
+
+    <div class="flow" id="flow">
+      <div class="flow-rail" aria-hidden="true"><span class="flow-fill" id="flowFill"></span><i></i><i></i><i></i></div>
+      <article class="stage">
+        <span class="node"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+        <span class="f">Stage 01</span>
+        <h4>Blockout</h4>
+        <ul><li>Reference boards</li><li>Real dimensions</li><li>Grey-box scale</li></ul>
+      </article>
+      <article class="stage">
+        <span class="node"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg></span>
+        <span class="f">Stage 02</span>
+        <h4>Model</h4>
+        <ul><li>Hard surface</li><li>Sculpt in ZBrush</li><li>Retopology</li></ul>
+      </article>
+      <article class="stage">
+        <span class="node"><svg viewBox="0 0 24 24"><path d="M4 20l6-6M14 4l6 6-8 8-6-6z"/></svg></span>
+        <span class="f">Stage 03</span>
+        <h4>Texture</h4>
+        <ul><li>UVs &amp; baking</li><li>PBR in Substance</li><li>Wear &amp; storytelling</li></ul>
+      </article>
+      <article class="stage">
+        <span class="node"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></span>
+        <span class="f">Stage 04</span>
+        <h4>Engine</h4>
+        <ul><li>Unreal &amp; Unity</li><li>LODs &amp; collisions</li><li>Lighting &amp; render</li></ul>
+      </article>
+    </div>
+
+    <div class="skillflow" aria-label="Tools and skills">
+      <div class="srow" data-dir="1"><div class="strack">
+        <span><i>B</i>Blender</span><span><i>3</i>3ds Max</span><span><i>M</i>Maya</span><span><i>Z</i>ZBrush</span><span><i>S</i>Substance Painter</span><span><i>Q</i>Quixel Mixer</span><span><i>U</i>Unreal Engine 5</span><span><i>U</i>Unity</span>
+      </div></div>
+      <div class="srow" data-dir="-1"><div class="strack">
+        <span class="alt">Hard-surface modeling</span><span class="alt">Retopology</span><span class="alt">UV unwrapping</span><span class="alt">High-to-low baking</span><span class="alt">PBR texturing</span><span class="alt">Arch-viz lighting</span><span class="alt">VR optimisation</span><span class="alt">Rig &amp; anim clean up</span>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= tool strip -->
+<div class="shell">
+  <div class="strip">
+    <a href="#work"><span class="d"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg></span><span><b>Blender</b><small>Modeling</small></span></a>
+    <a href="#work"><span class="d"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/></svg></span><span><b>3ds Max</b><small>Hard surface</small></span></a>
+    <a href="#work"><span class="d"><svg viewBox="0 0 24 24"><path d="M4 20l6-6M14 4l6 6-8 8-6-6z"/></svg></span><span><b>Substance</b><small>Texturing</small></span></a>
+    <a href="#work"><span class="d"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/></svg></span><span><b>Unreal 5</b><small>Real time</small></span></a>
+    <a href="#work"><span class="d"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></span><span><b>V-Ray</b><small>Arch-viz</small></span></a>
+  </div>
+</div>
+
+<!-- ============================================================= gallery -->
+<section class="sec tint" id="gallery">
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>Straight From the Viewport</h2>
+      <p class="lead">Finished renders, close-ups and engine captures. The columns drift at different speeds as you scroll; click any frame to open it.</p>
+    </div>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
+
+<!-- ============================================================= studios -->
+<section class="sec" id="studios">
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>Studios I Have Shipped With</h2>
+      <p class="lead">From a Disney series to a navy training simulator. Each card is one engagement and what I was trusted to own.</p>
+    </div>
+
+    <div class="tslider">
+      <div class="ttrack" id="ttrack"></div>
+    </div>
+    <div class="pager" id="tpager"></div>
+  </div>
+</section>
+
+<!-- ============================================================= orange band -->
+<section class="band" id="realtime">
+  <div class="shell">
+    <div class="band-grid">
+      <div>
+        <p class="eyebrow">Real time first</p>
+        <h2 data-words>Built For Real Time, From the First Polygon</h2>
+        <p>Most of this work ships inside an engine, not a render. Budgets are set at blockout, textures are packed for the target platform, and every asset is checked in-engine before it is called done.</p>
+
+        <div class="bstats" data-stagger>
+          <div class="bstat"><b data-count="21">0</b><span>projects published on ArtStation</span></div>
+          <div class="bstat"><b data-count="7">0</b><span>studios and teams shipped with</span></div>
+          <div class="bstat"><b data-count="34">0</b><span>Firebuds episodes finaled</span></div>
+        </div>
+
+        <div class="badges">
+          <div class="badge">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/></svg>
+            <span><small>Shipped in</small><b>Unreal Engine 5</b></span>
+          </div>
+          <div class="badge">
+            <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="5"/><circle cx="8.5" cy="12" r="2"/><circle cx="15.5" cy="12" r="2"/></svg>
+            <span><small>Shipped in</small><b>Unity · VR</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phonewrap">
+        <div class="phone">
+          <video id="tallFilm" muted loop playsinline preload="none" poster="film/tall.jpg" width="300" height="484">
+            <source src="film/tall.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="ptag pt-a">
+          <i><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></i>
+          <span>Checked in engine<small>before it is called done</small></span>
+        </div>
+        <div class="ptag pt-b">
+          <i><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg></i>
+          <span>LODs &amp; collisions<small>when the project needs them</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= explore -->
+<section class="sec" id="explore">
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>Three Projects, Explained</h2>
+      <p class="lead">The jobs that best show how I work: a full environment, a training simulator and client arch-viz.</p>
+    </div>
+    <div class="exgrid" id="exgrid" data-stagger></div>
+  </div>
+</section>
+
+<!-- ============================================================= services table -->
+<section class="sec tint" id="deliver">
+  <div class="shell">
+    <div class="sec-head">
+      <h2 data-words>What You Can Book, and What Arrives</h2>
+      <p class="lead">A plain list, so nothing is implied. Anything not on it can be quoted separately.</p>
+    </div>
+    <div class="cover" data-rise>
+      <div class="crow"><span class="code">PROP</span><p>Hard-surface prop, high and low poly, baked and textured</p><span class="st ok">available</span></div>
+      <div class="crow"><span class="code">CAR</span><p>Vehicle exterior, with interior and wheels on request</p><span class="st ok">available</span></div>
+      <div class="crow"><span class="code">ROOM</span><p>Interior or arch-viz room from a layout, V-Ray or Unreal</p><span class="st ok">available</span></div>
+      <div class="crow"><span class="code">VR</span><p>VR-optimised assets, collisions and Unity integration</p><span class="st ok">available</span></div>
+      <div class="crow"><span class="code">RETOPO</span><p>Retopology and re-texturing of scans or CAD models</p><span class="st ok">available</span></div>
+      <div class="crow"><span class="code">ANIM</span><p>Rig fixes and animation clean up, Maya and Alembic</p><span class="st">on request</span></div>
+      <div class="crow"><span class="code">CHAR</span><p>Full character sculpting and rigging from scratch</p><span class="st no">not offered</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= contact card -->
+<div class="newswrap" id="contact">
+  <div class="shell">
+    <div class="news">
+      <h2>Have a Model in Mind?</h2>
+      <p id="newsLine">Send an email address and a line about the asset. You will get a scope, a price and a date back.</p>
+      <form class="nform" id="nform">
+        <label class="sr" for="nemail">Email address</label>
+        <input id="nemail" type="email" placeholder="Enter Email Address" autocomplete="email" required>
+        <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/></svg></button>
+      </form>
+      <p class="nnote" id="nnote">Concept demo: nothing is sent anywhere.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================= footer -->
+<footer class="foot">
+  <div class="shell">
+    <div class="fgrid">
+      <div class="fbrand">
+        <a class="brand" href="#top">
+          <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M16 5l10 5.6v10.8L16 27 6 21.4V10.6z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M6 10.6l10 5.6 10-5.6M16 16.2V27" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+          <b>samorodin<i>3d</i></b>
+        </a>
+        <p>3D artist for props, vehicles and interiors. Production ready for Unreal, Unity and V-Ray.</p>
+        <span class="fl">Find me on</span>
+        <div class="socials">
+          <a href="https://www.artstation.com/mishasamorodin3d" target="_blank" rel="noopener" aria-label="ArtStation"><svg viewBox="0 0 24 24"><path d="M3 17l2 3h11l-2-3zM9 4h4l8 14-2 3zM8 15l3-6 3 6z"/></svg></a>
+          <a href="#contact" aria-label="Email"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+          <a href="#work" aria-label="Work"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg></a>
+          <a href="#reel" aria-label="Showreel"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></a>
+        </div>
+      </div>
+
+      <div class="fcol">
+        <h5>Categories</h5>
+        <ul id="fcats"></ul>
+      </div>
+      <div class="fcol">
+        <h5>Featured</h5>
+        <ul>
+          <li><a href="#explore">Man Cave in UE4</a></li>
+          <li><a href="#explore">Navy VR simulator</a></li>
+          <li><a href="#explore">Nfinite arch-viz</a></li>
+          <li><a href="#work">Corvette Gran Sport</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h5>This page</h5>
+        <ul>
+          <li><a href="#services">Process</a></li>
+          <li><a href="#reel">Showreel</a></li>
+          <li><a href="#studios">Studios</a></li>
+          <li><a href="#deliver">Services</a></li>
+        </ul>
+      </div>
+      <div class="fcol about">
+        <h5>Credits</h5>
+        <p>All renders © Misha Samorodin, from ArtStation. Motion clips: Blender Studio open movies (Charge, Spring, Wing It!, Sprite Fright, Coffee Run, Hero), CC BY 4.0.</p>
+      </div>
+    </div>
+
+    <div class="fbase">
+      <span>Unofficial concept demo. Renders © Misha Samorodin, shown for preview only.</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<a class="totop" id="totop" href="#top" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg></a>
+
+<!-- ============================================================= project viewer -->
+<div class="viewer" id="viewer" hidden>
+  <div class="vbox" role="dialog" aria-modal="true" aria-labelledby="vTitle">
+    <button class="vclose" id="vClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="vpic"><img id="vImg" alt=""></div>
+    <div class="vbody">
+      <span class="vcat" id="vCat"></span>
+      <h3 id="vTitle"></h3>
+      <p id="vText"></p>
+      <div class="vtools" id="vTools"></div>
+      <a class="btn btn-o btn-sm" id="vLink" target="_blank" rel="noopener">Open on ArtStation <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
