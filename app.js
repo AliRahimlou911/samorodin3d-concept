@@ -79,14 +79,8 @@ const PROJECTS = [
 const BY_ID = Object.fromEntries(PROJECTS.map(p => [p.id, p]));
 
 const ICON = {
-  car:   '<path d="M5 16h14M3 16v-3l2-5h14l2 5v3"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/>',
-  prop:  '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
-  env:   '<path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/>',
-  arch:  '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
-  vr:    '<rect x="3" y="7" width="18" height="10" rx="5"/><circle cx="8.5" cy="12" r="2"/><circle cx="15.5" cy="12" r="2"/>',
-  game:  '<path d="M6 9h12a3 3 0 0 1 3 3v2a3 3 0 0 1-5 2l-1-1H9l-1 1a3 3 0 0 1-5-2v-2a3 3 0 0 1 3-3z"/><path d="M8 11v3M6.5 12.5h3"/>',
-  retopo:'<path d="M4 4h16v16H4zM4 12h16M12 4v16M4 4l16 16"/>',
-  anim:  '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/>',
+  car: 'car-profile', prop: 'cube', env: 'house-line', arch: 'buildings',
+  vr: 'virtual-reality', game: 'game-controller', retopo: 'polygon', anim: 'film-slate',
 };
 const CATS = [
   { key: 'car',    name: 'Automotive' },
@@ -119,8 +113,9 @@ const EXPLORE = [
 const MARQUEE = ['Clean topology', 'PBR textures', 'Game ready', 'Real-world reference', 'Unreal Engine 5', 'VR optimised', 'Arch-viz in V-Ray', 'Delivered on time'];
 
 /* ---------------------------------------------------------------- build */
-const arrow = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-const svg = k => `<svg viewBox="0 0 24 24">${ICON[k]}</svg>`;
+const ph = n => `<svg class="ph" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const arrow = ph('b-arrow-right');
+const svg = k => ph('d-' + ICON[k]);
 
 $('#mtrack').innerHTML = [...MARQUEE, ...MARQUEE, ...MARQUEE, ...MARQUEE].map(t => `<span>${t}</span>`).join('');
 
@@ -186,8 +181,8 @@ function renderWork() {
     <div class="pic"><img src="img/${p.img}.webp" alt="${p.title}" loading="lazy"><span class="chip">${p.cat}</span></div>
     <div class="body"><h4>${p.title}</h4><p>${p.text}</p>
       <div class="meta"><span class="open">View</span>
-        <span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>${p.year}</span>
-        <span><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/></svg>${p.tools[0]}</span></div></div></article>`).join('');
+        <span>${ph('d-calendar-blank')}${p.year}</span>
+        <span>${ph('d-wrench')}${p.tools[0]}</span></div></div></article>`).join('');
   page = 0; slide();
   if (window.gsap && !reduce) gsap.fromTo(track.children, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .6, stagger: .05, ease: 'power3.out' });
 }
@@ -278,7 +273,7 @@ reelBtn.addEventListener('click', () => {
   reel.dataset.paused = pause ? '1' : '';
   pause ? reel.pause() : reel.play();
   reelBtn.firstChild.textContent = pause ? 'Play the Reel ' : 'Pause the Reel ';
-  $('.ic', reelBtn).innerHTML = pause ? '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg>';
+  $('.ic', reelBtn).innerHTML = ph(pause ? 'b-play' : 'b-pause');
 });
 const pad = n => String(n).padStart(2, '0');
 reel.addEventListener('timeupdate', () => {
