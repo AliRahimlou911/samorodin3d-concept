@@ -370,6 +370,19 @@ function fan(spread = 1) {
 fan(); addEventListener('resize', () => fan());
 deck.addEventListener('click', e => { const d = e.target.closest('.dk[data-id]'); if (d) openViewer(d.dataset.id); });
 
+/* ---------------------------------------------------------------- hover strike
+   Every picture frame gets a light streak layer. Cards are re-rendered by the filters,
+   so new frames are picked up as they appear. */
+const SHINE_HOSTS = '.wcard .pic, .ex .pic, .gtile, .dk, .hpill, .reel-frame, .phone, .vpic';
+function addShine(root = document) {
+  $$(SHINE_HOSTS, root.nodeType === 1 ? root.parentNode || root : root).forEach(h => {
+    if (!h.querySelector(':scope > .shine')) h.insertAdjacentHTML('beforeend', '<span class="shine" aria-hidden="true"></span>');
+  });
+}
+addShine();
+new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => n.nodeType === 1 && addShine(n))))
+  .observe(document.body, { childList: true, subtree: true });
+
 /* ---------------------------------------------------------------- motion */
 $$('[data-words]').forEach(h => {
   h.innerHTML = h.textContent.trim().split(/\s+/).map(w => `<span class="w"><span>${w}</span></span>`).join(' ');
