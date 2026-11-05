@@ -370,6 +370,37 @@ function fan(spread = 1) {
 fan(); addEventListener('resize', () => fan());
 deck.addEventListener('click', e => { const d = e.target.closest('.dk[data-id]'); if (d) openViewer(d.dataset.id); });
 
+/* ---------------------------------------------------------------- custom cursor
+   Mouse only. A dot that tracks exactly and a ring that trails it. Over links the ring becomes a
+   glowing disc; over pictures it becomes a labelled disc (View, Play, Zoom). */
+if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  const cur = $('#cur'), dot = $('.cur-dot', cur), ring = $('.cur-ring', cur), label = $('.cur-label', cur);
+  document.documentElement.classList.add('has-cur');
+  let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, seen = false;
+  addEventListener('pointermove', e => {
+    mx = e.clientX; my = e.clientY;
+    if (!seen) { seen = true; rx = mx; ry = my; }
+    dot.style.transform = `translate(${mx}px,${my}px)`;
+    const t = e.target;
+    const field = t.closest('input,select,textarea');
+    const pic = !field && t.closest('.wcard,.gtile,.ex,.dk,.hpill,.reel-frame,.phone');
+    const link = !field && !pic && t.closest('a,button,[role="tab"],.cat,.tab,.strack span,label');
+    cur.classList.toggle('text', !!field);
+    cur.classList.toggle('view', !!pic);
+    cur.classList.toggle('link', !!link);
+    if (pic) label.textContent = pic.matches('.dk-reel,.reel-frame,.phone,.hpill.vid') ? 'Play' : pic.matches('.hpill') ? 'Zoom' : 'View';
+  }, { passive: true });
+  addEventListener('pointerdown', () => cur.classList.add('down'));
+  addEventListener('pointerup', () => cur.classList.remove('down'));
+  document.addEventListener('mouseleave', () => { cur.style.opacity = 0; });
+  document.addEventListener('mouseenter', () => { cur.style.opacity = 1; });
+  (function follow() {
+    rx += (mx - rx) * .2; ry += (my - ry) * .2;
+    ring.style.transform = `translate(${rx}px,${ry}px)` + (cur.classList.contains('down') ? ' scale(.82)' : '');
+    requestAnimationFrame(follow);
+  })();
+}
+
 /* ---------------------------------------------------------------- hover strike
    Every picture frame gets a light streak layer. Cards are re-rendered by the filters,
    so new frames are picked up as they appear. */
