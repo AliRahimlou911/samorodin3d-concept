@@ -9,7 +9,7 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231E5EFF'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.5v-9z' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linejoin='round'/%3E%3Cpath d='M8 11.5l8 4.5 8-4.5M16 16v9' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&family=Instrument+Serif:ital@1&display=swap">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -49,83 +49,41 @@
 
 <!-- ============================================================= hero -->
 <section class="hero" id="top">
-  <span class="blob" aria-hidden="true"></span>
+  <div class="hero-bg" aria-hidden="true"><i class="au a1"></i><i class="au a2"></i><i class="au a3"></i><span class="hgrid"></span></div>
   <div class="shell">
-    <div class="hero-grid">
-
-      <div class="figure" id="figure">
-        <div class="shot"><img src="img/hero.webp" alt="Vintage gas pump, modeled in 3ds Max and textured in Substance" width="720" height="900" fetchpriority="high"></div>
-
-        <div class="fcard f-top" data-depth="18">
-          <div class="stack">
-            <img src="img/av-corvette-gran-sport.webp" alt="" width="27" height="27">
-            <img src="img/av-crossbow.webp" alt="" width="27" height="27">
-            <img src="img/av-retro-fridge.webp" alt="" width="27" height="27">
-            <img src="img/av-vintage-gas-pump.webp" alt="" width="27" height="27">
-            <span class="more">+</span>
-          </div>
-          21 projects on the record
-          <small>props, vehicles, rooms, VR</small>
-          <span class="heart"><svg class="ph" aria-hidden="true"><use href="#i-f-heart"/></svg></span>
-        </div>
-
-        <div class="fcard f-area" data-depth="-12">
-          <span class="ico"><svg class="ph" aria-hidden="true"><use href="#i-d-cube"/></svg></span>
-          Game ready, render ready
-          <small>PBR · clean UVs · LODs</small>
-        </div>
-
-        <div class="fcard f-count" data-depth="10">
-          <span class="ico"><svg class="ph" aria-hidden="true"><use href="#i-d-calendar-check"/></svg></span>
-          In 3D since 2015
-          <small>VCAD, Vancouver graduate</small>
-        </div>
-
-        <div class="fcard f-film" data-depth="-20">
-          <video id="heroFilm" muted loop playsinline autoplay preload="metadata" poster="film/card.jpg" width="148" height="89">
-            <source src="film/card.mp4" type="video/mp4">
-          </video>
-          <span><i></i>Showreel · 2026</span>
-        </div>
+    <div class="hero-head">
+      <span class="avail"><i class="pulse"></i>Available for freelance · Remote, worldwide</span>
+      <h1 class="hero-title" aria-label="The 3D artist who models it production ready">
+        <span class="ln"><span class="lin">The 3D Artist <span class="hpill"><img src="img/hero.webp" alt=""></span></span></span>
+        <span class="ln"><span class="lin">Who Models It</span></span>
+        <span class="ln"><span class="lin"><em>Production</em> <span class="hpill vid"><video muted loop playsinline autoplay preload="metadata" poster="film/card.jpg"><source src="film/card.mp4" type="video/mp4"></video></span> Ready.</span></span>
+      </h1>
+      <p class="lead hero-lead">Hard-surface props, vehicles and interiors, built from real reference and handed over clean: sensible topology, tidy UVs and PBR textures that drop straight into Unreal, Unity or a V-Ray still.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-o btn-xl" href="#contact">Get a Quote <span class="ic"><svg class="ph" aria-hidden="true"><use href="#i-b-arrow-right"/></svg></span></a>
+        <a class="btn btn-glass btn-xl" href="#reel"><span class="play"><svg class="ph" aria-hidden="true"><use href="#i-b-play"/></svg></span>Watch the Reel</a>
       </div>
+    </div>
 
-      <div class="hero-copy">
-        <h1 data-words>The 3D Artist Who Models It Production Ready</h1>
-        <p class="lead" data-fade>Hard-surface props, vehicles and interiors, built from real reference and handed over clean: sensible topology, tidy UVs and PBR textures that drop straight into Unreal, Unity or a V-Ray still.</p>
-
-        <form class="searchbar" id="quote" data-fade>
-          <label class="sseg">
-            <span class="sico"><svg class="ph" aria-hidden="true"><use href="#i-d-cube-focus"/></svg></span>
-            <span class="stxt"><small>Service</small>
-            <select id="qWhat">
-              <option value="">Choose service</option>
-              <option>Hard-surface prop</option>
-              <option>Vehicle</option>
-              <option>Interior / arch-viz</option>
-              <option>VR / simulation</option>
-              <option>Retopology</option>
-            </select></span>
-            <svg class="ph chev" aria-hidden="true"><use href="#i-b-caret-down"/></svg>
-          </label>
-          <label class="sseg">
-            <span class="sico"><svg class="ph" aria-hidden="true"><use href="#i-d-monitor-play"/></svg></span>
-            <span class="stxt"><small>Platform</small>
-            <select id="qWhere">
-              <option value="">Choose platform</option>
-              <option>Unreal Engine 5</option>
-              <option>Unity</option>
-              <option>Blender / Cycles</option>
-              <option>V-Ray stills</option>
-              <option>VR headset</option>
-            </select></span>
-            <svg class="ph chev" aria-hidden="true"><use href="#i-b-caret-down"/></svg>
-          </label>
-          <button class="btn btn-o" type="submit">Get a Quote</button>
-        </form>
-
-        <p class="tiny" data-fade>Usually replies within a day. Blender, 3ds Max, Maya, ZBrush and Substance in the toolbox.</p>
+    <div class="deck-wrap">
+      <span class="chip3 c-l" aria-hidden="true"><svg class="ph"><use href="#i-d-cube"/></svg><span><b>Game &amp; render ready</b><small>PBR · clean UVs · LODs</small></span></span>
+      <span class="chip3 c-r" aria-hidden="true"><svg class="ph"><use href="#i-d-calendar-check"/></svg><span><b>In 3D since 2015</b><small>VCAD Vancouver graduate</small></span></span>
+      <div class="deck" id="deck">
+        <figure class="dk" data-i="-2" data-id="AqzoXN"><img src="img/excalibur-sword.webp" alt="Excalibur in Stone"><figcaption>Excalibur in Stone</figcaption></figure>
+        <figure class="dk" data-i="-1" data-id="P6DK44"><img src="img/corvette-gran-sport.webp" alt="Corvette Gran Sport"><figcaption>Corvette Gran Sport</figcaption></figure>
+        <figure class="dk dk-reel" data-i="0"><video id="heroFilm" muted loop playsinline autoplay preload="metadata" poster="film/reel.jpg"><source src="film/reel.mp4" type="video/mp4"></video>
+          <a class="dk-play" href="#reel" aria-label="Watch the showreel"><svg class="ph" aria-hidden="true"><use href="#i-b-play"/></svg></a>
+          <figcaption><i></i>Showreel · 2026</figcaption></figure>
+        <figure class="dk" data-i="1" data-id="3dD1qA"><img src="img/man-cave-ue4.webp" alt="Man Cave Environment"><figcaption>Man Cave Environment</figcaption></figure>
+        <figure class="dk" data-i="2" data-id="q9vXbe"><img src="img/retro-fridge.webp" alt="Retro Fridge"><figcaption>Retro Fridge</figcaption></figure>
       </div>
+    </div>
 
+    <div class="hero-stats">
+      <div><b>21</b><span>projects on ArtStation</span></div>
+      <div><b>7</b><span>studios shipped with</span></div>
+      <div><b>34</b><span>Disney Firebuds episodes</span></div>
+      <div><b>UE5 · Unity</b><span>real-time first</span></div>
     </div>
   </div>
 </section>

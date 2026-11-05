@@ -293,7 +293,7 @@ reel.addEventListener('timeupdate', () => {
 });
 
 /* ---------------------------------------------------------------- quote + contact */
-$('#quote').addEventListener('submit', e => {
+$('#quote')?.addEventListener('submit', e => {
   e.preventDefault();
   const what = $('#qWhat').value, where = $('#qWhere').value;
   if (what || where) $('#newsLine').textContent = `${what || 'A 3D asset'}${where ? ' for ' + where : ''}. Leave an email and you will get a scope, a price and a date back.`;
@@ -350,20 +350,22 @@ document.addEventListener('click', e => {
   e.preventDefault(); scrollTo(id === '#top' ? document.body : id);
 });
 
-/* ---------------------------------------------------------------- hero parallax */
-const figure = $('#figure');
-if (!reduce && matchMedia('(pointer:fine)').matches) {
-  const cards = $$('.fcard', figure);
-  let mx = 0, my = 0, cx = 0, cy = 0;
-  addEventListener('mousemove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
-  (function loop() {
-    cx += (mx - cx) * .07; cy += (my - cy) * .07;
-    if (scrollY < innerHeight) cards.forEach(c => {
-      const d = +c.dataset.depth; c.style.translate = `${cx * d}px ${cy * d}px`;
-    });
-    requestAnimationFrame(loop);
-  })();
+/* ---------------------------------------------------------------- hero deck
+   Five cards fanned like a hand. Positions are plain inline transforms so the fan exists
+   without GSAP; the motion layer below animates from and around them. */
+const deck = $('#deck'), dks = $$('.dk', deck);
+function fan(spread = 1) {
+  const small = matchMedia('(max-width:700px)').matches;
+  const step = (small ? 92 : deck.parentElement.clientWidth < 900 ? 150 : 205) * spread;
+  dks.forEach(d => {
+    const i = +d.dataset.i;
+    d.dataset.x = i * step; d.dataset.y = Math.abs(i) * (small ? 16 : 34); d.dataset.r = i * 7;
+    d.style.transform = `translate(${d.dataset.x}px,${d.dataset.y}px) rotate(${d.dataset.r}deg)`;
+    d.style.zIndex = 10 - Math.abs(i);
+  });
 }
+fan(); addEventListener('resize', () => fan());
+deck.addEventListener('click', e => { const d = e.target.closest('.dk[data-id]'); if (d) openViewer(d.dataset.id); });
 
 /* ---------------------------------------------------------------- motion */
 $$('[data-words]').forEach(h => {
@@ -381,22 +383,39 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
   const fine = matchMedia('(hover:hover) and (pointer:fine) and (min-width:981px)').matches;
   const scrub = (trigger, start = 'top bottom', end = 'bottom top', s = .5) => ({ trigger, start, end, scrub: s });
 
-  /* ---- hero entrance: words rise with a slight rotation, copy un-blurs, the arch wipes open */
+  /* ---- hero entrance: lines rise, the deck deals itself out from the centre */
   const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  tl.from('.hero h1 .w>span', { yPercent: 115, rotate: 3, opacity: 0, duration: 1.1, stagger: .045 }, .1)
-    .from('.shot', { clipPath: 'inset(100% 0 0 0 round 200px 200px 22px 22px)', duration: 1.4, ease: 'expo.inOut' }, 0)
-    .from('.shot img', { scale: 1.4, duration: 2 }, 0)
-    .from('.blob', { scale: .5, opacity: 0, duration: 1.8 }, 0)
-    // opacity only: the cards carry a CSS float animation, which would beat an inline transform
-    .from('.fcard', { opacity: 0, filter: 'blur(8px)', duration: .9, stagger: .13 }, .6)
-    .from('.hero [data-fade]', { y: 30, opacity: 0, filter: 'blur(8px)', duration: 1, stagger: .14 }, .35)
-    .from('.nav .shell > *', { y: -20, opacity: 0, duration: .8, stagger: .06 }, 0);
+  tl.from('.nav .shell > *', { y: -20, opacity: 0, duration: .8, stagger: .06 }, 0)
+    .from('.avail', { y: 20, opacity: 0, filter: 'blur(6px)', duration: .9 }, .1)
+    .from('.hero-title .lin', { yPercent: 110, rotate: 2, duration: 1.2, stagger: .1 }, .15)
+    .from('.hpill', { scale: 0, rotate: -20, duration: 1.1, ease: 'back.out(1.8)', stagger: .15 }, .7)
+    .from('.hero-lead, .hero-ctas', { y: 30, opacity: 0, filter: 'blur(8px)', duration: 1, stagger: .12 }, .55)
+    .from(dks, { x: 0, y: 260, rotation: 0, opacity: 0, duration: 1.4, ease: 'expo.out', stagger: { each: .08, from: 'center' } }, .5)
+    .from('.chip3', { opacity: 0, scale: .8, filter: 'blur(8px)', duration: 1, stagger: .15 }, 1.1)
+    .from('.hero-stats > *', { y: 30, opacity: 0, duration: .9, stagger: .08 }, 1)
+    .from('.au', { opacity: 0, scale: .6, duration: 2.4, stagger: .2, ease: 'power2.out' }, 0);
 
-  /* ---- hero depth: arch, blob and photo leave at different rates */
-  gsap.to('.shot', { yPercent: -9, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'bottom top', .4) });
-  gsap.to('.shot img', { yPercent: 8, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'bottom top', .4) });
-  gsap.to('.blob', { yPercent: 14, rotate: 8, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'bottom top', .7) });
-  gsap.to('.hero-copy', { yPercent: -10, opacity: .3, ease: 'none', scrollTrigger: scrub('.hero', 'center top', 'bottom top', .4) });
+  /* ---- hero scroll: the fan opens wider and the headline lifts away */
+  const fanState = { s: 1 };
+  gsap.to(fanState, { s: 1.22, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'bottom top', .5),
+    onUpdate: () => dks.forEach(d => { const i = +d.dataset.i; gsap.set(d, { x: +d.dataset.x * fanState.s, y: +d.dataset.y - Math.abs(i) * 40 * (fanState.s - 1) * 4 }); }) });
+  gsap.to('.hero-head', { yPercent: -18, opacity: .2, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'center top', .4) });
+  gsap.to('.hgrid', { yPercent: 20, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'bottom top', .6) });
+
+  /* ---- hero pointer: the deck tilts toward the mouse, a card lifts out of the hand on hover */
+  if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    const hero = $('.hero');
+    hero.addEventListener('pointermove', e => {
+      const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+      gsap.to(deck, { rotateY: x * 10, rotateX: -y * 8, transformPerspective: 1400, duration: .8, ease: 'power2.out' });
+      gsap.to('.chip3', { x: x * 30, y: y * 20, duration: 1, ease: 'power2.out' });
+      gsap.to('.a1', { x: x * 80, y: y * 60, duration: 2, ease: 'power2.out' });
+    }, { passive: true });
+    dks.forEach(d => {
+      d.addEventListener('pointerenter', () => gsap.to(d, { y: +d.dataset.y - 34, rotation: 0, scale: 1.06, zIndex: 20, duration: .5, ease: 'power3.out' }));
+      d.addEventListener('pointerleave', () => gsap.to(d, { y: +d.dataset.y, rotation: +d.dataset.r, scale: 1, zIndex: 10 - Math.abs(+d.dataset.i), duration: .7, ease: 'expo.out' }));
+    });
+  }
 
   /* ---- headings: word by word, further and slower than a fade */
   $$('[data-words]').forEach(h => {
