@@ -339,6 +339,20 @@ document.addEventListener('click', e => {
   e.preventDefault(); scrollTo(id === '#top' ? document.body : id);
 });
 
+/* ---------------------------------------------------------------- headline capsules
+   Hover (or tap) opens a capsule into a big preview. It grows away from the nearest screen edge. */
+const pills = $$('.hpill');
+function pillOrigin(p) {
+  const r = p.getBoundingClientRect(), cx = (r.left + r.right) / 2 / innerWidth;
+  p.style.transformOrigin = `${cx > .62 ? 'right' : cx < .38 ? 'left' : 'center'} center`;
+}
+pills.forEach(p => {
+  p.addEventListener('pointerenter', () => pillOrigin(p));
+  p.addEventListener('click', e => { if (matchMedia('(hover:hover)').matches) return; e.stopPropagation(); pillOrigin(p); const on = !p.classList.contains('big'); pills.forEach(q => q.classList.remove('big')); p.classList.toggle('big', on); });
+});
+document.addEventListener('click', () => pills.forEach(q => q.classList.remove('big')));
+if (reduce || !window.gsap) $('.hero-title').classList.add('done');
+
 /* ---------------------------------------------------------------- hero deck
    Five cards fanned like a hand. Positions are plain inline transforms so the fan exists
    without GSAP; the motion layer below animates from and around them. */
@@ -377,7 +391,8 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
   tl.from('.nav .shell > *', { y: -20, opacity: 0, duration: .8, stagger: .06 }, 0)
     .from('.avail', { y: 20, opacity: 0, filter: 'blur(6px)', duration: .9 }, .1)
     .from('.hero-title .lin', { yPercent: 110, rotate: 2, duration: 1.2, stagger: .1 }, .15)
-    .from('.hpill', { scale: 0, rotate: -20, duration: 1.1, ease: 'back.out(1.8)', stagger: .15 }, .7)
+    .from('.hpill', { scale: 0, rotate: -20, duration: 1.1, ease: 'back.out(1.8)', stagger: .15, clearProps: 'transform' }, .7)
+    .add(() => $('.hero-title').classList.add('done'), 1.9)
     .from('.hero-lead, .hero-ctas', { y: 30, opacity: 0, filter: 'blur(8px)', duration: 1, stagger: .12 }, .55)
     .from(dks, { x: 0, y: 260, rotation: 0, opacity: 0, duration: 1.4, ease: 'expo.out', stagger: { each: .08, from: 'center' } }, .5)
     .from('.chip3', { opacity: 0, scale: .8, filter: 'blur(8px)', duration: 1, stagger: .15 }, 1.1)
