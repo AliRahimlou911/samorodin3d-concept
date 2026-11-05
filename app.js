@@ -157,14 +157,20 @@ $('#exgrid').innerHTML = EXPLORE.map(e => {
     <div class="body"><h4>${e.title}</h4><p>${e.text}</p><span class="more">Read more ${arrow}</span></div></article>`;
 }).join('');
 
-/* ---------------------------------------------------------------- gallery: three drifting columns */
-const GALLERY = ['3dD1qA', 'P6DK44', 'q9vXbe', 'AqzoXN', 'JrdxnD', 'oJEvq4', 'obawV4', 'YegvqX', '3EBg1Y',
-  'elbqEX', 'L3PmL5', 'JevY4a', 'R348gr', 'NqLDd1', 'QnzKbL', 'B3488', '9N2ly', 'WXv0XX'];
-$('#gal').innerHTML = [0, 1, 2].map(c => `<div class="gcol">${GALLERY.filter((_, i) => i % 3 === c).map(id => {
+/* ---------------------------------------------------------------- gallery: bento grid of his projects
+   b = big 2x2, t = tall 1x2, w = wide 2x1, n = single. Spans follow each render's shape. */
+const BENTO = [['3dD1qA', 'b'], ['AqzoXN', 't'], ['P6DK44', 'n'], ['q9vXbe', 'n'], ['JrdxnD', 'w'], ['oJEvq4', 'n'],
+  ['YegvqX', 'w'], ['obawV4', 'n'], ['L3PmL5', 'b'], ['3EBg1Y', 'w'], ['elbqEX', 'n'], ['R348gr', 't'], ['JevY4a', 'w'],
+  ['NqLDd1', 'n'], ['B3488', 'n'], ['QnzKbL', 't'], ['9N2ly', 'w'], ['Ry2PLD', 'w'], ['WXv0XX', 'n'], ['vDGXEa', 'w']];
+$('#bento').innerHTML = BENTO.map(([id, s], i) => {
   const p = BY_ID[id];
-  return `<figure class="gtile" data-id="${p.id}" tabindex="0"><img src="img/${p.img}.webp" alt="${p.title}" loading="lazy">
-    <figcaption><b>${p.title}</b><span>${p.cat} · ${p.year}</span></figcaption></figure>`;
-}).join('')}</div>`).join('');
+  return `<figure class="bcard ${s}" data-id="${p.id}" tabindex="0">
+    <img src="img/${p.img}.webp" alt="${p.title}" loading="lazy">
+    <span class="bnum">${String(i + 1).padStart(2, '0')}</span>
+    <span class="go">${arrow}</span>
+    <figcaption><span class="bcat">${p.cat} · ${p.year}</span><b>${p.title}</b><span class="btools">${p.tools.slice(0, 3).join(' · ')}</span></figcaption>
+  </figure>`;
+}).join('');
 
 /* ---------------------------------------------------------------- work slider */
 const track = $('#wtrack'), tabs = $('#tabs'), prev = $('#prev'), next = $('#next');
@@ -178,7 +184,7 @@ function renderTabs() {
 function renderWork() {
   const items = filter === 'all' ? PROJECTS : PROJECTS.filter(p => p.tags.includes(filter));
   track.innerHTML = items.map(p => `<article class="wcard" data-id="${p.id}" tabindex="0">
-    <div class="pic"><img src="img/${p.img}.webp" alt="${p.title}" loading="lazy"><span class="chip">${p.cat}</span></div>
+    <div class="pic"><img src="img/${p.img}.webp" alt="${p.title}" loading="lazy"><span class="chip">${p.cat}</span><span class="go">${arrow}</span><span class="yr">${p.year}</span></div>
     <div class="body"><h4>${p.title}</h4><p>${p.text}</p>
       <div class="meta"><span class="open">View</span>
         <span>${ph('d-calendar-blank')}${p.year}</span>
@@ -251,11 +257,11 @@ function openViewer(id) {
 }
 function closeViewer() { viewer.hidden = true; lenis && lenis.start(); lastFocus && lastFocus.focus(); }
 document.addEventListener('click', e => {
-  const card = e.target.closest('.wcard,.ex,.gtile'); if (card) openViewer(card.dataset.id);
+  const card = e.target.closest('.wcard,.ex,.bcard'); if (card) openViewer(card.dataset.id);
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && !viewer.hidden) closeViewer();
-  if (e.key === 'Enter' && e.target.matches('.wcard,.ex,.gtile')) openViewer(e.target.dataset.id);
+  if (e.key === 'Enter' && e.target.matches('.wcard,.ex,.bcard')) openViewer(e.target.dataset.id);
 });
 $('#vClose').addEventListener('click', closeViewer);
 viewer.addEventListener('click', e => { if (e.target === viewer) closeViewer(); });
@@ -431,13 +437,11 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
      scrollbar. Two elements, because a CSS animation would override an inline transform. */
   // (the marquee is pushed by its own loop near the top of this file)
 
-  /* ---- gallery: outer columns rise faster than the middle one, tiles open like a shutter */
-  if (matchMedia('(min-width:821px)').matches) {
-    $$('.gcol').forEach((col, i) => gsap.fromTo(col, { y: [90, -40, 140][i] }, { y: [-90, 60, -140][i], ease: 'none', scrollTrigger: scrub('#gallery', 'top bottom', 'bottom top', .6) }));
-  }
-  $$('.gtile').forEach(t => gsap.from(t, { clipPath: 'inset(18% 10% 18% 10% round 14px)', opacity: 0, scale: .92, duration: 1.2, ease: 'expo.out',
-    scrollTrigger: { trigger: t, start: 'top 92%', once: true } }));
-  $$('.gtile img').forEach(img => gsap.fromTo(img, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: scrub(img.parentElement, 'top bottom', 'bottom top', .4) }));
+  /* ---- gallery: cards open like shutters in a wave, photos drift inside their frames */
+  ScrollTrigger.batch('.bcard', { start: 'top 90%', once: true,
+    onEnter: b => gsap.fromTo(b, { clipPath: 'inset(22% 12% 22% 12% round 20px)', opacity: 0, scale: .9 },
+      { clipPath: 'inset(0% 0% 0% 0% round 20px)', opacity: 1, scale: 1, duration: 1.2, ease: 'expo.out', stagger: .08, clearProps: 'clipPath,transform' }) });
+  $$('.bcard img').forEach(img => gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: scrub(img.parentElement, 'top bottom', 'bottom top', .4) }));
 
   /* ---- skills flow: the rail fills with scroll and lights each stage as it arrives */
   const stages = $$('.stage'), vertical = () => matchMedia('(max-width:820px)').matches;
@@ -487,6 +491,27 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
       gsap.to($$('.cat', grid).filter(o => o !== c), { rotateY: 0, rotateX: 0, y: 0, duration: .7, ease: 'expo.out', overwrite: 'auto' });
     }, { passive: true });
     grid.addEventListener('pointerleave', () => gsap.to('.cat', { rotateY: 0, rotateX: 0, y: 0, duration: .7, ease: 'expo.out', overwrite: 'auto' }));
+    // gallery cards tilt toward the pointer, with a light that follows it
+    const bg = $('#bento');
+    bg.addEventListener('pointermove', e => {
+      const c = e.target.closest('.bcard'); if (!c) return;
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.style.setProperty('--mx', (x + .5) * 100 + '%'); c.style.setProperty('--my', (y + .5) * 100 + '%');
+      gsap.to(c, { rotateY: x * 7, rotateX: -y * 7, duration: .5, ease: 'power2.out', transformPerspective: 1000, overwrite: 'auto' });
+    }, { passive: true });
+    bg.addEventListener('pointerout', e => {
+      const c = e.target.closest('.bcard'); if (c && !c.contains(e.relatedTarget)) gsap.to(c, { rotateY: 0, rotateX: 0, duration: .8, ease: 'expo.out', overwrite: 'auto' });
+    });
+    // work cards lean toward the pointer and lift
+    const wt = $('#wtrack');
+    wt.addEventListener('pointermove', e => {
+      const c = e.target.closest('.wcard'); if (!c) return;
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      gsap.to(c, { rotateY: x * 8, rotateX: -y * 8, y: -10, duration: .5, ease: 'power2.out', transformPerspective: 900, overwrite: 'auto' });
+    }, { passive: true });
+    wt.addEventListener('pointerout', e => {
+      const c = e.target.closest('.wcard'); if (c && !c.contains(e.relatedTarget)) gsap.to(c, { rotateY: 0, rotateX: 0, y: 0, duration: .8, ease: 'expo.out', overwrite: 'auto' });
+    });
     $$('.btn-o, .arrows button').forEach(b => {
       b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); gsap.to(b, { x: (e.clientX - r.left - r.width / 2) * .25, y: (e.clientY - r.top - r.height / 2) * .35, duration: .4, ease: 'power3.out' }); });
       b.addEventListener('pointerleave', () => gsap.to(b, { x: 0, y: 0, duration: .7, ease: 'elastic.out(1,.4)' }));
