@@ -475,42 +475,41 @@ form .btn,.searchbar .btn{padding:0 22px}
 
 .landing{transition:none!important}
 
-/* gallery: bento grid */
+/* gallery: shape columns */
 .dome-sec{border-radius:0 0 44px 44px;background:radial-gradient(120% 70% at 50% 0%,#123A8C 0,#0A1A33 50%,#071226 100%);color:#fff;overflow:hidden}
 .dome-sec .eyebrow{color:#8FB0FF;text-align:center}
 .dome-sec h2{color:#fff}
 .dome-sec .lead{color:#A9B8D0}
-.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:clamp(150px,15vw,210px);grid-auto-flow:dense;gap:16px}
-.bcard{position:relative;margin:0;border-radius:20px;overflow:hidden;cursor:pointer;background:#13284d;--mx:50%;--my:50%;
-  box-shadow:0 0 0 1px rgba(143,176,255,.14),0 30px 50px -30px rgba(0,0,0,.8);transition:box-shadow .45s}
-.bcard.b{grid-column:span 2;grid-row:span 2}
-.bcard.t{grid-row:span 2}
-.bcard.w{grid-column:span 2}
-.bcard img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;scale:1.02;transition:scale .9s var(--ease)}
-.bcard::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(7,18,38,0) 45%,rgba(7,18,38,.9));opacity:.75;transition:opacity .45s}
-.bcard::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .4s;
-  background:radial-gradient(360px circle at var(--mx) var(--my),rgba(143,176,255,.28),transparent 45%)}
-.bcard:hover,.bcard:focus-visible{box-shadow:0 0 0 2px var(--o),0 0 46px -6px rgba(30,94,255,.7),0 40px 60px -30px rgba(0,0,0,.9);outline:0}
-.bcard:hover img{scale:1.1}
-.bcard:hover::before,.bcard:focus-visible::before{opacity:1}
-.bcard:hover::after{opacity:1}
-.bnum{position:absolute;left:16px;top:14px;z-index:2;font:800 12px/1 var(--mono);letter-spacing:.06em;color:#fff;padding:7px 9px;border-radius:8px;
-  background:rgba(7,18,38,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18)}
-.bcard .go{position:absolute;right:14px;top:14px;z-index:2;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fff;color:var(--o);
-  transform:scale(.5) rotate(-45deg);opacity:0;transition:transform .45s var(--ease),opacity .35s}
-.bcard .go svg{width:20px;height:20px}
-.bcard:hover .go,.bcard:focus-visible .go{transform:scale(1) rotate(-45deg);opacity:1}
-.bcard figcaption{position:absolute;left:18px;right:18px;bottom:16px;z-index:2;display:flex;flex-direction:column}
-.bcat,.btools{max-height:0;opacity:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .35s,margin .5s var(--ease)}
-.bcard:hover .bcat,.bcard:focus-visible .bcat{max-height:20px;opacity:1;margin-bottom:7px}
-.bcard:hover .btools,.bcard:focus-visible .btools{max-height:20px;opacity:1;margin-top:6px}
-.bcat{font:700 10.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#8FB0FF}
-.bcard figcaption b{font:700 17px/1.25 var(--disp);color:#fff;letter-spacing:-.01em}
-.bcard.b figcaption b{font-size:clamp(20px,2vw,28px)}
-.btools{font-size:12px;line-height:1.4;color:#C9D5EA}
-@media (max-width:960px){.bento{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:640px){.bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px;gap:10px}.bcard{border-radius:14px}
-  .bcard figcaption{left:12px;right:12px;bottom:10px}.bcard figcaption b{font-size:13px}.bcard .bcat,.bcard .btools{display:none}.bcard::before{opacity:.9}.bnum{left:10px;top:10px;font-size:10px}}
+.shapes{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;align-items:start;padding:40px 0 60px}
+.scol{display:grid;gap:34px;will-change:transform}
+.stile{margin:0;cursor:pointer;outline:0}
+.sframe{position:relative;overflow:hidden;background:#13284d;box-shadow:0 0 0 1px rgba(143,176,255,.16),0 34px 60px -34px rgba(0,0,0,.85);
+  transition:border-radius .7s var(--ease),box-shadow .45s;will-change:transform}
+.sframe img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;scale:1.04;transition:scale .9s var(--ease)}
+.sframe::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(7,18,38,.55));opacity:0;transition:opacity .45s}
+/* the six shapes */
+.arch .sframe{aspect-ratio:3/4;border-radius:999px 999px 22px 22px}
+.circle .sframe{aspect-ratio:1;border-radius:50%}
+.leaf .sframe{aspect-ratio:4/5;border-radius:150px 22px 150px 22px}
+.pill .sframe{aspect-ratio:3/5;border-radius:999px}
+.squircle .sframe{aspect-ratio:1;border-radius:34%}
+.corner .sframe{aspect-ratio:4/3;border-radius:22px 22px 110px 22px}
+/* hover: every shape relaxes into the same soft rectangle */
+.stile:hover .sframe,.stile:focus-visible .sframe{border-radius:22px;box-shadow:0 0 0 2px var(--o),0 0 46px -6px rgba(30,94,255,.7),0 40px 70px -34px rgba(0,0,0,.9)}
+.stile:hover .sframe img{scale:1.12}
+.stile:hover .sframe::after{opacity:1}
+.stile .go{position:absolute;right:12px;bottom:12px;z-index:1;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--o);
+  transform:scale(.4) rotate(-45deg);opacity:0;transition:transform .45s var(--ease),opacity .35s}
+.stile .go svg{width:19px;height:19px}
+.stile:hover .go,.stile:focus-visible .go{transform:scale(1) rotate(-45deg);opacity:1}
+.stile figcaption{display:flex;flex-direction:column;gap:5px;margin-top:14px;padding:0 4px;text-align:center}
+.stile figcaption b{font:700 15.5px/1.3 var(--disp);color:#fff;transition:color .3s}
+.stile figcaption span{font:700 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#8FB0FF}
+.stile:hover figcaption b{color:#9DBBFF}
+@media (max-width:960px){.shapes{gap:18px}.scol{gap:26px}}
+@media (max-width:700px){.shapes{grid-template-columns:1fr 1fr;gap:16px;padding:20px 0 30px}.scol{gap:22px}
+  .stile figcaption b{font-size:13px}.stile figcaption span{font-size:9.5px}
+  .leaf .sframe{border-radius:90px 16px 90px 16px}.corner .sframe{border-radius:16px 16px 70px 16px}.arch .sframe{border-radius:999px 999px 16px 16px}}
 
 /* work cards: framed photo, floating action, glow on hover */
 .wcard{border-radius:22px;padding:10px;border:1px solid var(--line);background:linear-gradient(#fff,#fff) padding-box,linear-gradient(140deg,var(--line),var(--line)) border-box;

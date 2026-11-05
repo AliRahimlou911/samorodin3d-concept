@@ -157,20 +157,25 @@ $('#exgrid').innerHTML = EXPLORE.map(e => {
     <div class="body"><h4>${e.title}</h4><p>${e.text}</p><span class="more">Read more ${arrow}</span></div></article>`;
 }).join('');
 
-/* ---------------------------------------------------------------- gallery: bento grid of his projects
-   b = big 2x2, t = tall 1x2, w = wide 2x1, n = single. Spans follow each render's shape. */
-const BENTO = [['3dD1qA', 'b'], ['AqzoXN', 't'], ['P6DK44', 'n'], ['q9vXbe', 'n'], ['JrdxnD', 'w'], ['oJEvq4', 'n'],
-  ['YegvqX', 'w'], ['obawV4', 'n'], ['L3PmL5', 'b'], ['3EBg1Y', 'w'], ['elbqEX', 'n'], ['R348gr', 't'], ['JevY4a', 'w'],
-  ['NqLDd1', 'n'], ['B3488', 'n'], ['QnzKbL', 't'], ['9N2ly', 'w'], ['Ry2PLD', 'w'], ['WXv0XX', 'n'], ['vDGXEa', 'w']];
-$('#bento').innerHTML = BENTO.map(([id, s], i) => {
-  const p = BY_ID[id];
-  return `<figure class="bcard ${s}" data-id="${p.id}" tabindex="0">
-    <img src="img/${p.img}.webp" alt="${p.title}" loading="lazy">
-    <span class="bnum">${String(i + 1).padStart(2, '0')}</span>
-    <span class="go">${arrow}</span>
-    <figcaption><span class="bcat">${p.cat} · ${p.year}</span><b>${p.title}</b><span class="btools">${p.tools.slice(0, 3).join(' · ')}</span></figcaption>
-  </figure>`;
-}).join('');
+/* ---------------------------------------------------------------- gallery: shape columns
+   Four columns (two on a phone) that drift at different speeds. Every frame has its own shape and
+   morphs into a soft rectangle on hover. Shapes rotate per column so neighbours never match. */
+const SHAPE_IDS = ['3dD1qA', 'AqzoXN', 'P6DK44', 'q9vXbe', 'JrdxnD', 'oJEvq4', 'YegvqX', 'obawV4', 'L3PmL5', '3EBg1Y',
+  'elbqEX', 'R348gr', 'JevY4a', 'NqLDd1', 'B3488', 'QnzKbL', '9N2ly', 'Ry2PLD', 'WXv0XX', 'vDGXEa'];
+const SHAPES = ['arch', 'circle', 'leaf', 'pill', 'squircle', 'corner'];
+function buildShapes() {
+  const n = matchMedia('(max-width:700px)').matches ? 2 : 4;
+  const cols = Array.from({ length: n }, () => []);
+  SHAPE_IDS.forEach((id, i) => cols[i % n].push([id, SHAPES[(i + Math.floor(i / n) * 2) % SHAPES.length]]));
+  $('#shapes').innerHTML = cols.map(col => `<div class="scol">${col.map(([id, shape]) => {
+    const p = BY_ID[id];
+    return `<figure class="stile ${shape}" data-id="${p.id}" tabindex="0">
+      <div class="sframe"><img src="img/${p.img}.webp" alt="${p.title}" loading="lazy"><span class="go">${arrow}</span></div>
+      <figcaption><b>${p.title}</b><span>${p.cat} · ${p.year}</span></figcaption></figure>`;
+  }).join('')}</div>`).join('');
+  $('#shapes').dataset.n = n;
+}
+buildShapes();
 
 /* ---------------------------------------------------------------- work slider */
 const track = $('#wtrack'), tabs = $('#tabs'), prev = $('#prev'), next = $('#next');
@@ -257,11 +262,11 @@ function openViewer(id) {
 }
 function closeViewer() { viewer.hidden = true; lenis && lenis.start(); lastFocus && lastFocus.focus(); }
 document.addEventListener('click', e => {
-  const card = e.target.closest('.wcard,.ex,.bcard'); if (card) openViewer(card.dataset.id);
+  const card = e.target.closest('.wcard,.ex,.stile'); if (card) openViewer(card.dataset.id);
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && !viewer.hidden) closeViewer();
-  if (e.key === 'Enter' && e.target.matches('.wcard,.ex,.bcard')) openViewer(e.target.dataset.id);
+  if (e.key === 'Enter' && e.target.matches('.wcard,.ex,.stile')) openViewer(e.target.dataset.id);
 });
 $('#vClose').addEventListener('click', closeViewer);
 viewer.addEventListener('click', e => { if (e.target === viewer) closeViewer(); });
@@ -437,11 +442,23 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
      scrollbar. Two elements, because a CSS animation would override an inline transform. */
   // (the marquee is pushed by its own loop near the top of this file)
 
-  /* ---- gallery: cards open like shutters in a wave, photos drift inside their frames */
-  ScrollTrigger.batch('.bcard', { start: 'top 90%', once: true,
-    onEnter: b => gsap.fromTo(b, { clipPath: 'inset(22% 12% 22% 12% round 20px)', opacity: 0, scale: .9 },
-      { clipPath: 'inset(0% 0% 0% 0% round 20px)', opacity: 1, scale: 1, duration: 1.2, ease: 'expo.out', stagger: .08, clearProps: 'clipPath,transform' }) });
-  $$('.bcard img').forEach(img => gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: scrub(img.parentElement, 'top bottom', 'bottom top', .4) }));
+  /* ---- gallery: columns drift at their own speeds (the earlier scroll effect), shapes pop in */
+  let shapeFx = [];
+  function shapeMotion() {
+    shapeFx.forEach(t => { t.scrollTrigger && t.scrollTrigger.kill(); t.kill(); });
+    shapeFx = [];
+    const travel = matchMedia('(max-width:700px)').matches ? [50, -50] : [140, -60, 180, -90];
+    $$('.scol').forEach((col, i) => shapeFx.push(gsap.fromTo(col, { y: travel[i] }, { y: -travel[i], ease: 'none', scrollTrigger: scrub('#gallery', 'top bottom', 'bottom top', .6) })));
+    $$('.stile').forEach(t => shapeFx.push(gsap.from($('.sframe', t), { scale: .6, opacity: 0, rotate: () => gsap.utils.random(-8, 8), duration: 1.2, ease: 'expo.out',
+      scrollTrigger: { trigger: t, start: 'top 95%', once: true } })));
+    $$('.stile img').forEach(img => shapeFx.push(gsap.fromTo(img, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: scrub(img.parentElement, 'top bottom', 'bottom top', .4) })));
+  }
+  shapeMotion();
+  let shapeN = $('#shapes').dataset.n;
+  addEventListener('resize', () => {
+    const n = matchMedia('(max-width:700px)').matches ? '2' : '4';
+    if (n !== shapeN) { shapeN = n; buildShapes(); shapeMotion(); ScrollTrigger.refresh(); }
+  });
 
   /* ---- skills flow: the rail fills with scroll and lights each stage as it arrives */
   const stages = $$('.stage'), vertical = () => matchMedia('(max-width:820px)').matches;
@@ -491,16 +508,15 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
       gsap.to($$('.cat', grid).filter(o => o !== c), { rotateY: 0, rotateX: 0, y: 0, duration: .7, ease: 'expo.out', overwrite: 'auto' });
     }, { passive: true });
     grid.addEventListener('pointerleave', () => gsap.to('.cat', { rotateY: 0, rotateX: 0, y: 0, duration: .7, ease: 'expo.out', overwrite: 'auto' }));
-    // gallery cards tilt toward the pointer, with a light that follows it
-    const bg = $('#bento');
-    bg.addEventListener('pointermove', e => {
-      const c = e.target.closest('.bcard'); if (!c) return;
-      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-      c.style.setProperty('--mx', (x + .5) * 100 + '%'); c.style.setProperty('--my', (y + .5) * 100 + '%');
-      gsap.to(c, { rotateY: x * 7, rotateX: -y * 7, duration: .5, ease: 'power2.out', transformPerspective: 1000, overwrite: 'auto' });
+    // gallery shapes lean toward the pointer
+    const sg = $('#shapes');
+    sg.addEventListener('pointermove', e => {
+      const c = e.target.closest('.stile'); if (!c) return;
+      const f = $('.sframe', c), r = f.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      gsap.to(f, { rotateY: x * 10, rotateX: -y * 10, duration: .5, ease: 'power2.out', transformPerspective: 900, overwrite: 'auto' });
     }, { passive: true });
-    bg.addEventListener('pointerout', e => {
-      const c = e.target.closest('.bcard'); if (c && !c.contains(e.relatedTarget)) gsap.to(c, { rotateY: 0, rotateX: 0, duration: .8, ease: 'expo.out', overwrite: 'auto' });
+    sg.addEventListener('pointerout', e => {
+      const c = e.target.closest('.stile'); if (c && !c.contains(e.relatedTarget)) gsap.to($('.sframe', c), { rotateY: 0, rotateX: 0, duration: .8, ease: 'expo.out', overwrite: 'auto' });
     });
     // work cards lean toward the pointer and lift
     const wt = $('#wtrack');
