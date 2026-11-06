@@ -339,36 +339,8 @@ document.addEventListener('click', e => {
   e.preventDefault(); scrollTo(id === '#top' ? document.body : id);
 });
 
-/* ---------------------------------------------------------------- headline capsules
-   Hover (or tap) opens a capsule into a big preview. It grows away from the nearest screen edge. */
-const pills = $$('.hpill');
-function pillOrigin(p) {
-  const r = p.getBoundingClientRect(), cx = (r.left + r.right) / 2 / innerWidth;
-  p.style.transformOrigin = `${cx > .62 ? 'right' : cx < .38 ? 'left' : 'center'} center`;
-}
-pills.forEach(p => {
-  p.addEventListener('pointerenter', () => pillOrigin(p));
-  p.addEventListener('click', e => { if (matchMedia('(hover:hover)').matches) return; e.stopPropagation(); pillOrigin(p); const on = !p.classList.contains('big'); pills.forEach(q => q.classList.remove('big')); p.classList.toggle('big', on); });
-});
-document.addEventListener('click', () => pills.forEach(q => q.classList.remove('big')));
-if (reduce || !window.gsap) $('.hero-title').classList.add('done');
-
-/* ---------------------------------------------------------------- hero deck
-   Five cards fanned like a hand. Positions are plain inline transforms so the fan exists
-   without GSAP; the motion layer below animates from and around them. */
-const deck = $('#deck'), dks = $$('.dk', deck);
-function fan(spread = 1) {
-  const small = matchMedia('(max-width:700px)').matches;
-  const step = (small ? 92 : deck.parentElement.clientWidth < 900 ? 150 : 205) * spread;
-  dks.forEach(d => {
-    const i = +d.dataset.i;
-    d.dataset.x = i * step; d.dataset.y = Math.abs(i) * (small ? 16 : 34); d.dataset.r = i * 7;
-    d.style.transform = `translate(${d.dataset.x}px,${d.dataset.y}px) rotate(${d.dataset.r}deg)`;
-    d.style.zIndex = 10 - Math.abs(i);
-  });
-}
-fan(); addEventListener('resize', () => fan());
-deck.addEventListener('click', e => { const d = e.target.closest('.dk[data-id]'); if (d) openViewer(d.dataset.id); });
+/* ---------------------------------------------------------------- hero work row */
+$('.hero-work').addEventListener('click', e => { const f = e.target.closest('.hw[data-id]'); if (f) openViewer(f.dataset.id); });
 
 /* ---------------------------------------------------------------- custom cursor
    Mouse only. A dot that tracks exactly and a ring that trails it. Over links the ring becomes a
@@ -383,12 +355,12 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
     dot.style.transform = `translate(${mx}px,${my}px)`;
     const t = e.target;
     const field = t.closest('input,select,textarea');
-    const pic = !field && t.closest('.wcard,.gtile,.ex,.dk,.hpill,.reel-frame,.phone');
+    const pic = !field && t.closest('.wcard,.gtile,.ex,.hw,.reel-frame,.phone');
     const link = !field && !pic && t.closest('a,button,[role="tab"],.cat,.tab,.strack span,label');
     cur.classList.toggle('text', !!field);
     cur.classList.toggle('view', !!pic);
     cur.classList.toggle('link', !!link);
-    if (pic) label.textContent = pic.matches('.dk-reel,.reel-frame,.phone,.hpill.vid') ? 'Play' : pic.matches('.hpill') ? 'Zoom' : 'View';
+    if (pic) label.textContent = pic.matches('.hw-reel,.reel-frame,.phone') ? 'Play' : 'View';
   }, { passive: true });
   addEventListener('pointerdown', () => cur.classList.add('down'));
   addEventListener('pointerup', () => cur.classList.remove('down'));
@@ -404,7 +376,7 @@ if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
 /* ---------------------------------------------------------------- hover strike
    Every picture frame gets a light streak layer. Cards are re-rendered by the filters,
    so new frames are picked up as they appear. */
-const SHINE_HOSTS = '.wcard .pic, .ex .pic, .gtile, .dk, .hpill, .reel-frame, .phone, .vpic';
+const SHINE_HOSTS = '.wcard .pic, .ex .pic, .gtile, .hw-pic, .reel-frame, .phone, .vpic';
 function addShine(root = document) {
   $$(SHINE_HOSTS, root.nodeType === 1 ? root.parentNode || root : root).forEach(h => {
     if (!h.querySelector(':scope > .shine')) h.insertAdjacentHTML('beforeend', '<span class="shine" aria-hidden="true"></span>');
@@ -430,40 +402,12 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
   const fine = matchMedia('(hover:hover) and (pointer:fine) and (min-width:981px)').matches;
   const scrub = (trigger, start = 'top bottom', end = 'bottom top', s = .5) => ({ trigger, start, end, scrub: s });
 
-  /* ---- hero entrance: lines rise, the deck deals itself out from the centre */
-  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  tl.from('.nav .shell > *', { y: -20, opacity: 0, duration: .8, stagger: .06 }, 0)
-    .from('.avail', { y: 20, opacity: 0, filter: 'blur(6px)', duration: .9 }, .1)
-    .from('.hero-title .lin', { yPercent: 110, rotate: 2, duration: 1.2, stagger: .1 }, .15)
-    .from('.hpill', { scale: 0, rotate: -20, duration: 1.1, ease: 'back.out(1.8)', stagger: .15, clearProps: 'transform' }, .7)
-    .add(() => $('.hero-title').classList.add('done'), 1.9)
-    .from('.hero-lead, .hero-ctas', { y: 30, opacity: 0, filter: 'blur(8px)', duration: 1, stagger: .12 }, .55)
-    .from(dks, { x: 0, y: 260, rotation: 0, opacity: 0, duration: 1.4, ease: 'expo.out', stagger: { each: .08, from: 'center' } }, .5)
-    .from('.chip3', { opacity: 0, scale: .8, filter: 'blur(8px)', duration: 1, stagger: .15 }, 1.1)
-    .from('.hero-stats > *', { y: 30, opacity: 0, duration: .9, stagger: .08 }, 1)
-    .from('.au', { opacity: 0, scale: .6, duration: 2.4, stagger: .2, ease: 'power2.out' }, 0);
-
-  /* ---- hero scroll: the fan opens wider and the headline lifts away */
-  const fanState = { s: 1 };
-  gsap.to(fanState, { s: 1.22, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'bottom top', .5),
-    onUpdate: () => dks.forEach(d => { const i = +d.dataset.i; gsap.set(d, { x: +d.dataset.x * fanState.s, y: +d.dataset.y - Math.abs(i) * 40 * (fanState.s - 1) * 4 }); }) });
-  gsap.to('.hero-head', { yPercent: -18, opacity: .2, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'center top', .4) });
-  gsap.to('.hgrid', { yPercent: 20, ease: 'none', scrollTrigger: scrub('.hero', 'top top', 'bottom top', .6) });
-
-  /* ---- hero pointer: the deck tilts toward the mouse, a card lifts out of the hand on hover */
-  if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
-    const hero = $('.hero');
-    hero.addEventListener('pointermove', e => {
-      const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
-      gsap.to(deck, { rotateY: x * 10, rotateX: -y * 8, transformPerspective: 1400, duration: .8, ease: 'power2.out' });
-      gsap.to('.chip3', { x: x * 30, y: y * 20, duration: 1, ease: 'power2.out' });
-      gsap.to('.a1', { x: x * 80, y: y * 60, duration: 2, ease: 'power2.out' });
-    }, { passive: true });
-    dks.forEach(d => {
-      d.addEventListener('pointerenter', () => gsap.to(d, { y: +d.dataset.y - 34, rotation: 0, scale: 1.06, zIndex: 20, duration: .5, ease: 'power3.out' }));
-      d.addEventListener('pointerleave', () => gsap.to(d, { y: +d.dataset.y, rotation: +d.dataset.r, scale: 1, zIndex: 10 - Math.abs(+d.dataset.i), duration: .7, ease: 'expo.out' }));
-    });
-  }
+  /* ---- hero entrance: a quiet fade-up, nothing more */
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  tl.from('.nav .shell > *', { y: -16, opacity: 0, duration: .7, stagger: .05 }, 0)
+    .from('.hero-eyebrow, .hero-title, .hero-lead, .hero-ctas', { y: 24, opacity: 0, duration: .9, stagger: .08 }, .1)
+    .from('.hw', { y: 40, opacity: 0, duration: 1, stagger: .1 }, .4)
+    .from('.hero-stats > *', { y: 16, opacity: 0, duration: .8, stagger: .06 }, .7);
 
   /* ---- headings: word by word, further and slower than a fade */
   $$('[data-words]').forEach(h => {
